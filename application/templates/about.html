@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <h1> About Us </h1>
+    <p> Future Creators is a University of Alberta Engineering student group that seeks to inspire future engineers and technology innovators by providing youth with the mentors, knowledge, and resources to bring their own technology projects to life.</p>
+    <p> We partner with schools to provide a weekly afterschool program to students in grades 7-12 </p>
+
+    <div class="card-deck">
+        <div class="card">
+          <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="Pic">
+          <div class="card-body">
+            <h5 class="card-title">Mentors</h5>
+            <p class="card-text">Each school is matched with a pair of knowledgable university engineering student mentors. Additionally, these student mentors have access to support and guidance from the University of Alberta Engineering Faculty</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="Pic">
+          <div class="card-body">
+            <h5 class="card-title">Knowledge</h5>
+            <p class="card-text">Our projects usually use some combination of Arduino, 3-D Printing, and Coding. To establish a base of knowledge for any students who need it, we have beginner courses in all these areas</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="Pic">
+          <div class="card-body">
+            <h5 class="card-title">Resources</h5>
+            <p class="card-text">We loan (or give!) any parts needed for free. From Arduinos (mini-computers) to sensors, wires, batteries, 3D-printer access and 3D printing filament. We make sure students have all they need to make their idea a reality.</p>
+          </div>
+        </div>
+      </div>
+      <br> 
+      <div class="card mb-3">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="./static/profile_pics/arduino.jpg" class="card-img" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title"> Arduino</h5>
+              <p class="card-text">Students are introduced to electric basics such as, voltage, current, ground, get to learn PCB (Printed Circuit Board) Design, and will have a chance to build and code their own circuit board.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="./static/profile_pics/3dprinting.jpg" class="card-img" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">3D Printing</h5>
+              <p class="card-text">Our team strives to give you all the basics in 3D printing to be used for your own projects. We cover a wide range of topics such as: 3D printer operation and troubleshooting techniques, introduction to dimensioning, and 3D modeling. With the help of our knowledgeable mentors, all you need is a laptop and a dash of creativity to turn ideas into reality.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="./static/profile_pics/coding.jpg" class="card-img" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Coding</h5>
+              <p class="card-text">In this section, our team will be teaching you the basics of coding. There are various coding languages but we have chosen to teach you a language called "C". We will be covering topics such as variables, decision making statements and some basics of what constitutes a function in programming.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h1> Meet our team! </h1>
+      <div class="row row-cols-1 row-cols-md-4">
+    {% for user in users %}
+        <div class="col mb-4">
+          <div class="card">
+            <img src="{{url_for('static', filename='profile_pics/' + user.image_file)}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ user.username}}</h5>
+              <p class="card-text">{{ user.biography }}</p>
+              <p class="card-text">Contact: {{ user.email }}</p>
+              
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+      </div>
+{% endblock content %}

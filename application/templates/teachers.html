@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <h1> Teachers </h1>
+    <p> <a href="{{url_for('main.contact')}}">Sign up on our form </a> and we will get in touch to better understand your needs and match you or your classroom with a pair of mentors</p>
+    <p> Bring Future Creators to your school and give students in grades 7-12 the chance to build their own technology projects </p>
+
+    <div class="card-deck">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">1. After school program at your school</h5>
+          <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="Pic">
+          <p></p>
+            <p class="card-text">Future Creators comes to your school (now offering digital delivery!). We work with you to find what is best for your schedule, and establish a once-a-week after school program where a pair of mentors work with your students</p>
+          </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">2. Choose a project</h5>
+          <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="Pic">
+          <p></p>
+            <p class="card-text">Our mentors help your students choose a project that inerests them. This can be anything they can think of. In the past, students have chosen project from building drones to video games!</p>
+          </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">3. We help make it a reality</h5>
+          <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="Pic">
+          <p></p>
+            <p class="card-text">Our mentors provide the <a href="{{url_for('main.about')}}" >resources, knowledge, and guidance </a> in weekly afterschhol sessions to bring your students' ideas to life</p>
+          </div>
+        </div>
+        
+      </div>
+{% endblock content %}
