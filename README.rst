@@ -75,7 +75,7 @@ Run the server!:
 
     python3 run.py
     
-Any email-related functions on the website will not function on this repository and will cause an error. If you want to use them, you can enter your username and password in config.py
+The local server should be running now. Visit http://localhost:5000/ in your web browser to see it. Any email-related functions on the website will not function on this repository and will cause an error. If you want to use them, you can enter your username and password in config.py
 
 
 
