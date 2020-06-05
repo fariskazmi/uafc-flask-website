@@ -51,6 +51,12 @@ Navigate into the downloaded folder:
 
     cd uafc-flask-website
     
+Install virtual python environment:
+
+.. code-block:: text
+
+    sudo apt-get install python3-venv
+    
 Create a virtual python environment:
 
 .. code-block:: text
