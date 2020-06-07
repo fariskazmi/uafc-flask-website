@@ -1,3 +1,4 @@
+<script src="https://www.google.com/recaptcha/api.js"></script>
 {% extends 'layout.html' %}
 {% block content %}
 <div class="content-section">
@@ -31,6 +32,8 @@
                     {{ form.content(class="form-control form-control-lg", rows="5") }}
                 {% endif %}
             </div>
+             {{ form.recaptcha }}
+
         </fieldset>
         <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}

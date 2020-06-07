@@ -12,10 +12,8 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        flash(form.picture.data)
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
-            flash(picture_file)
             post = Post(title=form.title.data, content=form.content.data, author=current_user, image_file=picture_file)
         else:
             post = Post(title=form.title.data, content=form.content.data, author=current_user)

@@ -39,7 +39,13 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    image_file = db.Column(db.String(20), nullable=False, default='')
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')'"
+
+class Newsletter_subscription(db.Model):
+    email = db.Column(db.String(120), primary_key=True)
+
+    def __repr__(self):
+        return f"Subscription('{self.email}')'"

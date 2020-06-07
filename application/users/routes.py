@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, url_for, flash, redirect, request
 from flask_login import login_user, current_user, logout_user, login_required
 from application import db, bcrypt
-from application.models import User, Post
-from application.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from application.users.utils import save_picture, send_rest_email
+from application.models import User, Post, Newsletter_subscription
+from application.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, NewsletterForm
+from application.users.utils import save_picture, send_rest_email, send_newsletter_email
 
 users = Blueprint('users', __name__)
 
@@ -103,3 +103,15 @@ def reset_token(token):
         flash('Password reset successfully! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title="Rest Password", form=form)
+
+@users.route("/newsletter", methods=['GET', 'POST'])
+def newsletter():
+    form = NewsletterForm()
+    if form.validate_on_submit():
+        emails = Newsletter_subscription.query.all()
+        for email in emails:
+            send_newsletter_email(email.email, form.title.data, form.content.data)
+        flash("Emails sent!", 'success')
+        return redirect(url_for('users.newsletter'))
+
+    return render_template('newsletter.html', title="Create newsletter", form=form, legend="Create Email Newsletter (Beta)")

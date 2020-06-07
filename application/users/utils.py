@@ -19,10 +19,14 @@ def save_picture(form_picture):
 def send_rest_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request - Future Creators', sender='noreply@futurecreators.com', recipients=[user.email])
-    msg.body = f''' To reset your password, visit the following link:
+    msg.body = f''' To reset your password, visit the following link (expires in 30 min):
     {url_for('users.reset_token', token=token, _external=True)}
-
 
     If you did not make this request then simply ignore this email and no changes will be made
     '''
+    mail.send(msg)
+
+def send_newsletter_email(email, subject, content):
+    msg = Message(subject, sender='noreply@futurecreators.com', recipients=[email])
+    msg.body = f''' Example Newsletter. Have fun! {content} '''
     mail.send(msg)

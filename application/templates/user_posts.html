@@ -7,9 +7,10 @@
             <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="{{ url_for('users.user_posts', username=event.author.username) }}">{{ event.author.username }}</a>
-                <small class="text-muted">{{ event.date_posted.strftime('%Y-%m-%d') }}</small>
+                <small class="text-muted">{{ event.date_posted.strftime('%B %d, %Y') }}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('posts.post', post_id=event.id) }}">{{ event.title }}</a></h2>
+            {% if event.image_file != '' %} <img src="{{url_for('static', filename='profile_pics/' + event.image_file) }}"> {% endif %}
             <p class="article-content">{{ event.content }}</p>
             </div>
         </article>

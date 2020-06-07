@@ -7,3 +7,5 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = ""
     MAIL_PASSWORD = ""
+    RECAPTCHA_PUBLIC_KEY = ""
+    RECAPTCHA_PRIVATE_KEY = ""

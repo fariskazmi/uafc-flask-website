@@ -62,3 +62,9 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+class NewsletterForm(FlaskForm):
+    title = StringField("Subject", validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    picture = FileField('Upload Picture', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField("Send")

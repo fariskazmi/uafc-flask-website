@@ -1,38 +1,70 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h1> Empowering youth to create their own technology projects</h1>
-<div class="row row-cols-1 row-cols-md-2">
-    <div class="col mb-4">
-      <div class="card">
-        <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Prospective Volunteers</h5>
-          <p class="card-text">If you're passionate about technology and engineering and want to help youth build their own projects. <a href="{{url_for('main.volunteers')}}">Learn more here </a></p>
+
+<div id="slides" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{{url_for('static', filename='profile_pics/black_logo.jpg') }}">
+            <div class="carousel-caption">
+                <h1 class="display-2"> Future Creators</h1>
+                <h3> Powering the creators of tomorrow</h3>
+                <button type="button" class="btn btn-outline-light btn-lg"> Learn more </button>
+                <button type="button" class="btn btn-primary btn-lg"> Get started </button>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="col mb-4">
-      <div class="card">
-        <img src="./static/profile_pics/default.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Prospective Teachers</h5>
-          <p class="card-text">Teachers of grades 7-12, bring Future Creators to your school. We are working on digital delivery and would love to work with you to implement a system best for you. <a href="{{url_for('main.teachers')}}">Learn more here </a></p>
+</div>
+
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> Empowering youth to create their own technology projects </h1>
         </div>
-      </div>
+        <hr>
+        <div class="col-12">
+            <p class="lead">Future Creators is a University of Alberta Engineering student group that seeks to inspire future engineers and technology innovators by providing youth with the mentors, knowledge, and resources to bring their own technology projects to life.
+
+                We partner with schools to provide a weekly afterschool program to students in grades 7-12 </p>
+        </div>
     </div>
-  </div>
-  <h1> Upcoming events</h1>
+</div>
+
+<div class="container-fluid padding">
+    <div class="row text-center padding">
+        <div class="col-xs-6 col-sm-6 col-md-6">
+            <i class="fas fa-bold"></i>
+            <h3> Prospective Volunteers </h3>
+            <p> If you're passionate about technology and engineering and want to help youth build their own projects. <a href="{{url_for('main.volunteers')}}">Learn more here </a></p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <i class="fab fa-css3"></i>
+            <h3> Prospective Teachers </h3>
+            <p> Teachers of grades 7-12, bring Future Creators to your school. We are working on digital delivery and would love to work with you to implement a system best for you. <a href="{{url_for('main.teachers')}}">Learn more here </a></p>
+        </div> 
+    </div>
+    <hr class="my-4">
+</div>
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> Upcoming Events </h1>
+        </div>
+        <hr>
+    </div>
+</div>
     {% for event in events.items %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/' + event.author.image_file) }}">
             <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="{{ url_for('users.user_posts', username=event.author.username) }}">{{ event.author.username }}</a>
-                <small class="text-muted">{{ event.date_posted.strftime('%Y-%m-%d') }}</small>
+                <small class="text-muted">{{ event.date_posted.strftime('%B %d, %Y') }}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('posts.post', post_id=event.id) }}">{{ event.title }}</a></h2>
            
-                <img src="{{url_for('static', filename='profile_pics/' + event.image_file) }}">
+            {% if event.image_file != '' %} <img src="{{url_for('static', filename='profile_pics/' + event.image_file) }}"> {% endif %}
             
             <p class="article-content">{{ event.content }}</p>
             </div>
