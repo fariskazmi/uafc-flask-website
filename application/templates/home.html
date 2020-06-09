@@ -1,25 +1,28 @@
 {% extends 'layout.html' %}
-{% block content %}
 
-<div id="slides" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{{url_for('static', filename='profile_pics/black_logo.jpg') }}">
-            <div class="carousel-caption">
-                <h1 class="display-2"> Future Creators</h1>
-                <h3> Powering the creators of tomorrow</h3>
-                <button type="button" class="btn btn-outline-light btn-lg"> Learn more </button>
-                <button type="button" class="btn btn-primary btn-lg"> Get started </button>
-            </div>
-        </div>
+{% block head %}
+<meta name="google-site-verification" content="a9o_W1-5gp96gJC7Q6DZ8npvc-yOD0kaII6lg47__zY" />
+{% endblock head %}
+
+{% block mainpage %}
+
+<div id="home">
+    <div class="carousel-caption">
+        <h1 class="display-2"> Future Creators</h1>
+        <h3> Powering the creators of tomorrow</h3>
+        <a class="btn btn-outline-light btn-lg" href="#scrolldownto"> Learn More </a>
     </div>
 </div>
 
+{% endblock mainpage %}
+
+
+{% block content %}
 
 <div class="container-fluid padding">
     <div class="row welcome text-center">
         <div class="col-12">
-            <h1 class="display-4"> Empowering youth to create their own technology projects </h1>
+            <h1 id="scrolldownto" class="display-4"> Empowering youth to create their own technology projects </h1>
         </div>
         <hr>
         <div class="col-12">
@@ -33,18 +36,19 @@
 <div class="container-fluid padding">
     <div class="row text-center padding">
         <div class="col-xs-6 col-sm-6 col-md-6">
-            <i class="fas fa-bold"></i>
+            <a href="{{url_for('main.volunteers')}}"><img class="img_header" src="{{url_for('static', filename='profile_pics/volunteer.png') }}"></img></a>
             <h3> Prospective Volunteers </h3>
             <p> If you're passionate about technology and engineering and want to help youth build their own projects. <a href="{{url_for('main.volunteers')}}">Learn more here </a></p>
         </div>
         <div class="col-sm-6 col-md-6">
-            <i class="fab fa-css3"></i>
+            <a href="{{url_for('main.teachers')}}"><img class="img_header" src="{{url_for('static', filename='profile_pics/teacher.png') }}"></img></a>
             <h3> Prospective Teachers </h3>
             <p> Teachers of grades 7-12, bring Future Creators to your school. We are working on digital delivery and would love to work with you to implement a system best for you. <a href="{{url_for('main.teachers')}}">Learn more here </a></p>
         </div> 
     </div>
     <hr class="my-4">
 </div>
+
 
 <div class="container-fluid padding">
     <div class="row welcome text-center">

@@ -52,6 +52,20 @@
                             {{ form.biography(class="form-control form-control-lg", rows="5") }}
                         {% endif %}
                     </div>
+                    <div class="form-group">
+                        {{ form.order.label(class="form-control-label") }}
+    
+                        {% if form.order.errors %}
+                            {{ form.order(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.order.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.order(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
                     <div class = "form-group">
                         {{ form.picture.label() }}
                         {{form.picture(class="form-control-file") }}
@@ -64,7 +78,54 @@
                 </fieldset>
                 <div class="form-group">
                     {{ form.submit(class="btn btn-outline-info") }}
+                    <button type="button" class="btn btn-danger btn m-1" data-toggle="modal" data-target="#deleteModal"> Delete Account </button>
                 </div>
             </form>
     </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Account?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>This action will also delete all posts you have created. This cannot be undone.</p>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger btn m-1" data-toggle="modal" data-target="#deleteModal2"> Delete </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal2" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Are you absolutely sure?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>This will delete all posts you have created and your account. This cannot be undone.</p>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{url_for('users.delete_user', user_id=current_user.id)}}" method="POST">
+              <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}

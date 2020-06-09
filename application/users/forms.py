@@ -1,15 +1,16 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from flask_login import current_user
 from application.models import User
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=15)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    username = StringField('Username', validators=[DataRequired(), Length(min=1, max=50)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=127)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=4, max=127)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password'), Length(min=4, max=127)])
+    invite_key = StringField('Invite Key', validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username): 
@@ -23,16 +24,17 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That email is taken. Please choose a different one')
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=127)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=4, max=127)])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
 
 class UpdateAccountForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=15)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    biography = TextAreaField('Biography', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), Length(min=1, max=50)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=127)])
+    biography = TextAreaField('Biography', validators=[DataRequired(), Length(min=1, max=511)])
+    order = IntegerField("Order - where you'll appear on the About Us page (1 is first, 99 is last)", validators=[DataRequired(), NumberRange(min=1, max=99)])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
@@ -50,7 +52,7 @@ class UpdateAccountForm(FlaskForm):
 
 
 class RequestResetForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=127)])
     submit = SubmitField('Request Password Reset')
 
     def validate_email(self, email): 
@@ -59,12 +61,13 @@ class RequestResetForm(FlaskForm):
             raise ValidationError('There is no account with that email. You must register first')
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=4, max=127)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password'), Length(min=4, max=127)])
     submit = SubmitField('Reset Password')
 
 class NewsletterForm(FlaskForm):
     title = StringField("Subject", validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     picture = FileField('Upload Picture', validators=[FileAllowed(['jpg', 'png'])])
+    onlyme = BooleanField('Send Newsletter only to myself (For Previewing/Testing)')
     submit = SubmitField("Send")

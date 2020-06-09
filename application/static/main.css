@@ -1,4 +1,70 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+
+    .img_header {
+        width: 50%;
+        margin-bottom: 20px;
+    }
+
+    #home {
+        background-color: black;
+        display: table;
+        height: 100%;
+        position: relative;
+        width: 100%;
+        background-size: cover;
+        animation-name: fadeIn;
+        animation-duration: 8s;
+        animation-timing-function: ease-out;
+        animation-fill-mode: forwards;
+        animation-delay: 0.1s;
+        
+    }
+
+    @keyframes fadeIn {
+        0% {
+            background: url(/static/profile_pics/black2.jpg) no-repeat center center fixed;
+        }
+        100% {
+            background: url(/static/profile_pics/black_logo_zoomed2.jpg) no-repeat center center fixed;
+        }
+      }
+      
+      @-moz-keyframes fadeIn {
+        0% {
+            background: url(/static/profile_pics/black2.jpg) no-repeat center center fixed;
+        }
+        100% {
+            background: url(/static/profile_pics/black_logo_zoomed2.jpg) no-repeat center center fixed;
+        }
+      }
+      
+      @-webkit-keyframes fadeIn {
+        0% {
+            background: url(/static/profile_pics/black2.jpg) no-repeat center center fixed;
+        }
+        100% {
+            background: url(/static/profile_pics/black_logo_zoomed2.jpg) no-repeat center center fixed;
+        }
+      }
+      
+      @-o-keyframes fadeIn {
+        0% {
+            background: url(/static/profile_pics/black2.jpg) no-repeat center center fixed;
+        }
+        100% {
+            background: url(/static/profile_pics/black_logo_zoomed2.jpg) no-repeat center center fixed;
+        }
+      }
+      
+      @-ms-keyframes fadeIn {
+        0% {
+            background: url(/static/profile_pics/black2.jpg) no-repeat center center fixed;
+        }
+        100% {
+            background: url(/static/profile_pics/black_logo_zoomed2.jpg) no-repeat center center fixed;
+        }
+      }
+
     .newsletter {
     padding: 30px 0;
     background: #92959c;
@@ -96,18 +162,25 @@ html, body {
     width: 100%;
     font-family: 'Poppins', sans-serif;
     color: #222;
+    scroll-behavior: smooth;
+
 }
 /* how tall navbar is */
 .navbar {
     padding: 0.8rem;
+    opacity: 80%;
 }
 
 .navbar-nav li{
     padding-right: 20px;
 }
+nav .navbar-nav li a{
+    color: white !important;
+    }
 
 .nav-link {
     font-size: 1.05em !important;
+    
 }
 
 .carousel-inner img {
@@ -135,7 +208,8 @@ html, body {
 }
 
 .carousel-item {
-    max-height: 85vh;
+    max-height: 100vh;
+    max-width: 100%;
     transform: translateY(-10%);    
 }
 

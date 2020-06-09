@@ -40,10 +40,38 @@
                     {% endfor %}
                 {% endif %}
             </div>
+            <div class="form-check">
+                {{ form.onlyme(class="form-check-input") }}
+                {{ form.onlyme.label(class="form-check-label") }}
+            </div>
         </fieldset>
         <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+            
+            <button type="button" class="btn btn-secondary btn m-1" data-toggle="modal" data-target="#deleteModal2"> Send </button>            
+            <!-- Modal -->
+            <div class="modal fade" id="deleteModal2" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Are you sure you want to send the newsletter?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Emails will be sent immediately to anyone subscribed to the list. This cannot be undone. Make sure you have completely finished your message before sending. It is also recommended you send it to yourself first to see how it looks.</p>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form action="{{url_for('users.newsletter')}}" method="POST">
+                        {{ form.submit(class="btn btn-outline-info") }}
+                    </form>
+                    </div>
+                </div>
+                </div>
+            </div>
         </div>
     </form>
 </div>
+
 {% endblock content %}

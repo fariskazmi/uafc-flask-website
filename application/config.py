@@ -9,3 +9,4 @@ class Config:
     MAIL_PASSWORD = ""
     RECAPTCHA_PUBLIC_KEY = ""
     RECAPTCHA_PRIVATE_KEY = ""
+    INVITE_KEY = "64eb743dc25dd63d74d84bdbccd1ac"

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, flash, redirect, request
+from flask import Blueprint, render_template, url_for, flash, redirect, request, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from application import db, bcrypt
 from application.models import User, Post, Newsletter_subscription
@@ -11,14 +11,18 @@ users = Blueprint('users', __name__)
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
+    
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data.lower(), password=hashed_password, biography="Default Bio")
-        db.session.add(user)
-        db.session.commit()
-        flash(f'Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('users.login'))
+        if current_app.config['INVITE_KEY'] == form.invite_key.data:
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            user = User(username=form.username.data, email=form.email.data.lower(), password=hashed_password, biography="Default Bio")
+            db.session.add(user)
+            db.session.commit()
+            flash(f'Your account has been created! You are now able to log in', 'success')
+            return redirect(url_for('users.login'))
+        else:
+            flash('Invite Key Incorrect! (Access is limited to club members) ', 'danger')
     return render_template('register.html', title='Register', form=form)
     
 @users.route('/login', methods=['GET', 'POST'])
@@ -56,6 +60,7 @@ def account():
         current_user.username = form.username.data
         current_user.email = form.email.data.lower()
         current_user.biography = form.biography.data
+        current_user.order = form.order.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
         return redirect(url_for('users.account'))
@@ -63,6 +68,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email.lower()
         form.biography.data = current_user.biography
+        form.order.data = current_user.order
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template("account.html", title="Account", image_file=image_file, form=form)
 
@@ -81,7 +87,7 @@ def reset_request():
         return redirect(url_for('main.home'))
     form = RequestResetForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data.lower()).first()
         send_rest_email(user)
         flash('An email has been sent with instruction to reset your password.', 'info')
         return redirect(url_for('users.login'))
@@ -105,13 +111,39 @@ def reset_token(token):
     return render_template('reset_token.html', title="Rest Password", form=form)
 
 @users.route("/newsletter", methods=['GET', 'POST'])
+@login_required
 def newsletter():
     form = NewsletterForm()
     if form.validate_on_submit():
         emails = Newsletter_subscription.query.all()
-        for email in emails:
-            send_newsletter_email(email.email, form.title.data, form.content.data)
-        flash("Emails sent!", 'success')
+        if not form.onlyme.data:
+            for email in emails:
+                send_newsletter_email(email.email, form.title.data, form.content.data)
+            flash("Emails sent!", 'success')
+        else:
+            send_newsletter_email(current_user.email, form.title.data, form.content.data)
+            flash("Email sent only to you!", 'success')
         return redirect(url_for('users.newsletter'))
 
     return render_template('newsletter.html', title="Create newsletter", form=form, legend="Create Email Newsletter (Beta)")
+
+
+@users.route("/account/<int:user_id>/delete", methods=['POST'])
+@login_required
+def delete_user(user_id):
+    if current_user.is_authenticated:
+        user = User.query.get_or_404(user_id)
+        if user.id != current_user.id:
+            abort(403)
+        else:
+            events = Post.query.filter_by(author=user)
+            for event in events:
+                db.session.delete(event)
+            db.session.commit()
+            logout_user()
+            db.session.delete(user)
+            db.session.commit()
+            flash('Account deleted!', 'success')
+        return redirect(url_for('main.home'))
+    else:
+        abort(403)
