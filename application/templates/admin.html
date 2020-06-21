@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> Admin Control Panel  </h1>
+        </div>
+        <hr>
+        <div class="col-12">
+            <p class="lead" style="font-size: x-large; font-weight: 500;">What do you want to do?</p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid padding">
+    <div class="row text-center padding">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="main-page-buttons" onclick="window.location = '/admin/users'">
+                <img class="img_header" src="{{url_for('static', filename='profile_pics/user.png') }}"></img>
+                <h3> Users </h3>
+                <p> View and edit (email, biography, profile picture, order), as well as delete users on this website.</p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="main-page-buttons" onclick="window.location = '/admin/newsletter-subscribers'">
+                <img class="img_header" src="{{url_for('static', filename='profile_pics/newsletter.png') }}"></img>
+                <h3> Newsletter Subscribers </h3>
+                <p> View, edit, and delete newletter subscribers on this website.</p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="main-page-buttons" onclick="window.location = '/admin/contact-forms'">
+                <img class="img_header" src="{{url_for('static', filename='profile_pics/contact.png') }}"></img>
+                <h3> Contact Forms </h3>
+                <p> View general, volunteer, and teacher forms that have been submitted on this website.</p>
+            </div>
+        </div> 
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="main-page-buttons" onclick="window.location = '/admin/news-events'">
+                <img class="img_header" src="{{url_for('static', filename='profile_pics/news.png') }}"></img>
+                <h3> News Events </h3>
+                <p> View, edit, and delete any news events that have been created on this website.</p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="main-page-buttons" onclick="window.location = '/admin/news-events'">
+                <img class="img_header" src="{{url_for('static', filename='profile_pics/analytics.png') }}"></img>
+                <h3> Analytics </h3>
+                <p> View the traffic on this website. Total views, each page view, time spent, as well as other things! </p>
+            </div>
+        </div> 
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="main-page-buttons" onclick="window.location = '/admin/news-events'">
+                <img class="img_header" src="{{url_for('static', filename='profile_pics/email_server.png') }}"></img>
+                <h3> Email Server </h3>
+                <p> View, send, and manage any emails have been sent or you want to send from our custom domain email server!</p>
+            </div>
+        </div>  
+    </div>
+    <hr class="my-4">
+</div>
+{% endblock content %}

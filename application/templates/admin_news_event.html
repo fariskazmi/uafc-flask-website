@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% block head %}
+{% endblock head %}
+{% block content %}
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/' + event.author.image_file) }}">
+        <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="{{ url_for('users.user_posts', username=event.author.username) }}">{{ event.author.username }}</a>
+            <small class="text-muted">{{ event.date_posted.strftime('%B %d, %Y') }}</small>
+            <div>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id = event.id ) }}"> Update </a>
+                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal"> Delete </button>
+            </div>
+        </div>
+        <h1 class="article-title">{{ event.title }}</h1>
+         {% if event.image_file != '' %} <img src="{{url_for('static', filename='profile_pics/' + event.image_file) }}"> {% endif %}
+        <p class="article-content">{{ event.content }}</p>
+        </div>
+    </article>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>This cannot be undone.</p>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{url_for('posts.delete_post', post_id=event.id)}}" method="POST">
+              <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+        window.onload = function() {
+            let els = document.querySelectorAll('.article-content');
+            els.forEach(function(el){
+                el.innerHTML = el.textContent.replace(/(\r\n|\n|\r)/gm, "");
+            });
+        };
+</script>
+{% endblock content %}

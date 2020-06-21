@@ -1,0 +1,101 @@
+{% extends 'layout.html' %}
+{% block head %}
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .g-recaptcha {
+        display: inline-block;
+    }
+</style>
+{% endblock head %}
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> {{ heading }} </h1>
+        </div>
+        <hr>
+        <div class="col-12">
+            <p class="lead"> {{ body }} </p>
+        </div>
+        <div class="col-12">
+            <form name="submit_this_form_and_only_this_form_please" id="form_to_submit" method="POST" action="{{ url_for('main.newsletter_signup') }}">
+                {{ form.csrf_token() }}
+                <div class="form-group">
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg", style="text-align: center", id="email-to-read") }}
+                    {% endif %}
+                </div>
+                <fieldset class="form-group">
+                     {{ form.recaptcha }}
+        
+                </fieldset>
+                <div class="form-group">
+                    <a class="btn btn-outline-info" href="#" onclick="verify_email()"> Confirm Subscription </a>     
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal2" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Are you sure you entered your email correct?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="modal-text-insert">The email: {{form.email.data}} does not appear to be a valid email. Make sure you have typed it in correctly. If you are sure this is the right email, you can proceed.</p>
+                                <i style="font-size: xx-small;"> Powered by Faris' amazing email checker</i>
+                            </div>
+                            <div class="modal-footer">
+                            <button id="dismiss-button-modal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            {{ form.submit(class="btn btn-danger") }}
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+    function verify_email(){
+        email = document.getElementById('email-to-read').value
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "/verify-email",
+            traditional: "true",
+            data: JSON.stringify({email}),
+            dataType: "json",
+            success: function(result){
+                if (result == false){
+                    document.getElementById('modal-text-insert').innerHTML = 'The email: <b>' + document.getElementById('email-to-read').value + '</b> does not appear to be a valid email. Make sure you have typed it in correctly. If you are sure this is the right email, you can proceed.'
+                    $('#deleteModal2').modal('toggle');
+                }
+                else {
+                    document.getElementById('modal-text-insert').innerHTML = 'The email: <b>' + document.getElementById('email-to-read').value + "</b> appears to be a valid email!"
+                    document.getElementById('deleteModalLabel').innerHTML = 'Newsletter Subscription'
+                    $('#deleteModal2').modal('toggle');
+                }
+
+            }
+        })      
+    }
+</script>
+{% endblock scripts %}

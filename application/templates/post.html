@@ -1,4 +1,6 @@
 {% extends 'layout.html' %}
+{% block head %}
+{% endblock head %}
 {% block content %}
     <article class="media content-section">
         <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/' + event.author.image_file) }}">
@@ -13,7 +15,7 @@
             </div>
             {% endif %}
         </div>
-        <h2 class="article-title">{{ event.title }}</h2>
+        <h1 class="article-title">{{ event.title }}</h1>
          {% if event.image_file != '' %} <img src="{{url_for('static', filename='profile_pics/' + event.image_file) }}"> {% endif %}
         <p class="article-content">{{ event.content }}</p>
         </div>
@@ -41,4 +43,12 @@
       </div>
     </div>
   </div>
+<script>
+        window.onload = function() {
+            let els = document.querySelectorAll('.article-content');
+            els.forEach(function(el){
+                el.innerHTML = el.textContent.replace(/(\r\n|\n|\r)/gm, "");
+            });
+        };
+</script>
 {% endblock content %}

@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
@@ -8,9 +8,12 @@ from application.models import User
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=1, max=50)])
     email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=127)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=4, max=127)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=127)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password'), Length(min=4, max=127)])
     invite_key = StringField('Invite Key', validators=[DataRequired()])
+    admin = BooleanField('Admin Account')
+    admin_key = StringField('Admin Key')
+    recaptcha = RecaptchaField()
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username): 
@@ -25,8 +28,9 @@ class RegistrationForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=127)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=4, max=127)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=127)])
     remember = BooleanField('Remember Me')
+    recaptcha = RecaptchaField()
     submit = SubmitField('Login')
 
 
@@ -35,6 +39,7 @@ class UpdateAccountForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email(), Length(min=5, max=127)])
     biography = TextAreaField('Biography', validators=[DataRequired(), Length(min=1, max=511)])
     order = IntegerField("Order - where you'll appear on the About Us page (1 is first, 99 is last)", validators=[DataRequired(), NumberRange(min=1, max=99)])
+    admin_key = StringField('Admin Key - Upgrade to Admin Account')
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
@@ -61,7 +66,7 @@ class RequestResetForm(FlaskForm):
             raise ValidationError('There is no account with that email. You must register first')
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=4, max=127)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=127)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password'), Length(min=4, max=127)])
     submit = SubmitField('Reset Password')
 

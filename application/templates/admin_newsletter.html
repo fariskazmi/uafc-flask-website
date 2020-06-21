@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> Newsletter Subscribers </h1>
+        </div>
+        <hr>
+    </div>
+</div>
+<ul class="list-group">
+    {% for s in n_s %}
+    <nav style="background-color: #e3f2fd;" class="navbar navbar-light justify-content-between">
+        <h5 class="mb-1">{{ s.email }}</h5>
+        <form class="form-inline">
+            <a style="margin: 0 20px" class="btn btn-outline-light btn-primary btn-lg" href="#scrolldownto"> Edit </a> 
+            <a style="margin: 0 20px" class="btn btn-outline-light btn-danger btn-lg" href="#" data-toggle="modal" data-target="#deleteModal" data-whatever="{{s.email}}"> Delete</a>
+        </form>
+    </nav>
+    <hr>       
+    {% endfor %}
+</ul>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete email from the newsletter?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <p>This cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form id="form-to-submit-to-delete" action="#" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('Are you sure you want to delete ' + recipient + ' from the newsletter?')
+        $('#form-to-submit-to-delete').attr('action', "/admin/newsletter-subscribers/" + recipient + "/delete");
+    })
+</script>
+{% endblock scripts %}
+
+

@@ -17,6 +17,10 @@ class User(db.Model, UserMixin):
     biography = db.Column(db.String(512), nullable=False)
     order = db.Column(db.String(3), nullable=False, default='50')
     posts = db.relationship('Post', backref='author', lazy=True)
+    post_title_saved = db.Column(db.Text, nullable=False, default='')
+    post_html_saved = db.Column(db.Text, nullable=False, default='')
+    post_md_saved = db.Column(db.Text, nullable=False, default='')
+    admin = db.Column(db.Boolean, nullable=False, default=False)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -37,8 +41,9 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
     content = db.Column(db.Text, nullable=False)
+    content_md = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='')
 

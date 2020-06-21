@@ -66,6 +66,22 @@
                             {{ form.order(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
+                    {% if not current_user.admin %}
+                    <div class="form-group">
+                    {{ form.admin_key.label(class="form-control-label") }}
+                    {% if form.admin_key.errors %}
+                        {{ form.admin_key(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.admin_key.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.admin_key(class="form-control form-control-lg") }}
+                    {% endif %}
+                    </div>
+                    {% endif %}
+
                     <div class = "form-group">
                         {{ form.picture.label() }}
                         {{form.picture(class="form-control-file") }}

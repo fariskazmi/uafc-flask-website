@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> News </h1>
+        </div>
+        <hr>
+    </div>
+</div>
+    {% for event in events.items %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{url_for('static', filename='profile_pics/' + event.author.image_file) }}">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{{ url_for('users.user_posts', username=event.author.username) }}">{{ event.author.username }}</a>
+                <small class="text-muted">{{ event.date_posted.strftime('%B %d, %Y') }}</small>
+            </div>
+            <h1><a class="article-title" href="{{ url_for('users.admin_news_event', post_id=event.id) }}">{{ event.title }}</a></h1>
+           
+            {% if event.image_file != '' %} <img src="{{url_for('static', filename='profile_pics/' + event.image_file) }}"> {% endif %}
+            
+            <p class="article-content">{{ event.content }}</p>
+            </div>
+        </article>
+    {% endfor %}
+    {% for page_num in events.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if events.page == page_num %}
+                <a class="btn btn-info mb-4 " href="{{ url_for('users.admin_news_events', page=page_num) }}"> {{ page_num }}</a>
+            {% else %}
+                <a class="btn btn-outline-info mb-4 " href="{{ url_for('users.admin_news_events', page=page_num) }}"> {{ page_num }}</a>
+            {% endif %}
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}
+    <script>
+        window.onload = function() {
+            let els = document.querySelectorAll('.article-content');
+            els.forEach(function(el){
+                el.innerHTML = el.textContent.replace(/(\r\n|\n|\r)/gm, "");
+            });
+        };
+  </script>
+{% endblock content %}

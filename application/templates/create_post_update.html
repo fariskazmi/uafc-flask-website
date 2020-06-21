@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+{% block head %}
+    
+    <link rel="stylesheet" href="{{url_for('static', filename='js/css/style.css')}}">
+    <script src="{{url_for('static', filename='js/modernizr-2.6.2.min.js')}}"></script>
+    
+{% endblock head %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">You can use either Markdown or HTML to create a post.</h4>
+                <p> If you want to use color, images, or any other CSS attributes, you should use HTML. You can use both at the same time, but going from HTML to Markdown will cause you to lose all your CSS style properties. After editing a field, scroll down to the bottom to see what your post will look like.</p>
+                <hr>
+                <p class="mb-0">Whichever field you edit will impact the other field at the same time. Edit one of the fields below to get started. HTML will give you better formatting, but Markdown is easier for simpler tasks. </p>
+              </div>
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {% if form.title.errors %}
+                    {{ form.title(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.title(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content_md.label(class="form-control-label")  }}
+                {% if form.content_md.errors %}
+                    {{ form.content_md(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content_md.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content_md(class="form-control form-control-lg mdhtmlform-md", id="markdown_input", rows="10") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {% if form.content.errors %}
+                    {{ form.content(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content(class="form-control form-control-lg mdhtmlform-html", id="html_input", rows="10") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ "Output"}}
+            </div>
+            <div style="border-color: red; overflow: hidden;" class="mdhtmlform-html"></div>
+            <!--
+            <div class = "form-group">
+                {{ form.picture.label() }}
+                {{form.picture(class="form-control-file") }}
+                {% if form.picture.errors %}
+                    {% for error in form.picture.errors %}
+                        <span class="text-danger"> {{ error }} </span> </br>
+                    {% endfor %}
+                {% endif %} -->
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/plugins.js')}}"></script>
+    <script src="{{url_for('static', filename='js/showdown.js')}}"></script>
+    <script src="{{url_for('static', filename='js/to-markdown.js')}}"></script>
+    <script src="{{url_for('static', filename='js/mdhtmlform.js')}}"></script>
+    <script src="{{url_for('static', filename='js/example.js')}}"></script>
+</div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+<script>
+    window.onload = function() {
+        var split_url = window.location.href.split('/')
+        post_id = split_url[4]
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "/get-post-data",
+            traditional: "true",
+            data: JSON.stringify({post_id}),
+            dataType: "json",
+            success: function(result){
+                if (result){
+                    markdown = result['md']
+                    html = result['html']
+                    document.getElementById("markdown_input").value = markdown;
+                    document.getElementById("html_input").value = html;
+                }
+                else {
+                    alert("An error has occured. Please try again later. If this keeps happening, scream for help.")
+                }
+
+            }
+        })      
+       
+};
+
+</script>
+{% endblock scripts %}

@@ -1,5 +1,52 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
 
+    meter {
+  
+        margin: 0 auto 1em;
+        width: 100%;
+        height: 0.5em;
+    
+        /* Applicable only to Firefox */
+        background: none;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    meter::-webkit-meter-bar {
+        background: none;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Webkit based browsers */
+    meter[value="1"]::-webkit-meter-optimum-value { background: red; }
+    meter[value="2"]::-webkit-meter-optimum-value { background: yellow; }
+    meter[value="3"]::-webkit-meter-optimum-value { background: orange; }
+    meter[value="4"]::-webkit-meter-optimum-value { background: green; }
+
+    /* Gecko based browsers */
+    meter[value="1"]::-moz-meter-bar { background: red; }
+    meter[value="2"]::-moz-meter-bar { background: yellow; }
+    meter[value="3"]::-moz-meter-bar { background: orange; }
+    meter[value="4"]::-moz-meter-bar { background: green; }
+
+    .main-page-buttons {
+        border: 1px double rgb(0, 0, 0); 
+        padding: 40px 10px; 
+        background-color: rgb(249, 250, 255);
+        transition: transform 0.4s, background-color 1.5s;
+        border-radius: 50px;
+    }
+    .main-page-buttons:hover{
+        transform: scale(1.11);
+        background-color: rgb(237, 242, 255);
+    }
+    .card {
+        transition: transform 0.4s;
+    }
+    .card:hover{
+        transform: scale(1.11);
+    }
+
+
     .img_header {
         width: 50%;
         margin-bottom: 20px;
@@ -172,7 +219,7 @@ html, body {
 }
 
 .navbar-nav li{
-    padding-right: 20px;
+    
 }
 nav .navbar-nav li a{
     color: white !important;
@@ -308,20 +355,20 @@ hr.light {
     }
 
     .carousel-caption h1{
-        font-size: 350%;
+        font-size: 400%;
     }
 
     .carousel-caption h3 {
-        font-size: 140%;
+        font-size: 170%;
         font-weight: 400;
         padding-bottom: 0.2rem;
     }
     .carousel-caption .btn {
-        font-size: 95%;
+        font-size: 115%;
         padding: 8px 14px;
     }
     .display-4 {
-        font-size: 200%;
+        font-size: 300%;
     }
     .social a {
         font-size: 2.5em;
@@ -334,21 +381,21 @@ hr.light {
     }
 
     .carousel-caption h1{
-        font-size: 250%;
+        font-size: 350%;
     }
 
     .carousel-caption h3 {
-        font-size: 110%;
+        font-size: 140%;
     }
     .carousel-caption .btn {
-        font-size: 90%;
+        font-size: 100%;
         padding: 4px 8px;
     }
     .carousel-indicators {
         display: none;
     }
     .display-4 {
-        font-size: 160%;
+        font-size: 270%;
     }
     .social a {
         font-size: 2em;

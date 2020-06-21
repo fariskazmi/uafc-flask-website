@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> Users </h1>
+        </div>
+        <hr>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-4">
+    {% for user in users %}
+    <a style="color:inherit; text-decoration: none;" href="{{ url_for('users.admin_user', user_id=user.id) }}">
+        <div class="col mb-4">
+          <div class="card">
+            <img src="{{url_for('static', filename='profile_pics/' + user.image_file)}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Username: {{ user.username}}</h5>
+              <p class="card-text">Biography: {{ user.biography }}</p>
+              <p class="card-text">Email: {{ user.email }}</p>
+              <p class="card-text">Order: {{ user.order }}</p>
+              <p class="card-text">Admin: {{ user.admin }}</p>
+              
+            </div>
+          </div>
+        </div>
+    </a>
+    {% endfor %}
+      </div>
+{% endblock content %}

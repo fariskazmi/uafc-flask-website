@@ -9,7 +9,7 @@
         </div>
         <hr>
         <div class="col-12">
-            <p class="lead"><a href="{{url_for('main.contact')}}">Sign up on our form </a> and we will get in touch to better understand your needs and match you or your classroom with a pair of mentors. Bring Future Creators to your school and give students in grades 7-12 the chance to build their own technology projects </p>
+            <p class="lead"><a href="#signup">Sign up on our form </a> and we will get in touch to better understand your needs and match you or your classroom with a pair of mentors. Bring Future Creators to your school and give students in grades 7-12 the chance to build their own technology projects. </p>
         </div>
     </div>
 </div>
@@ -19,18 +19,109 @@
         <div class="col-xs-12 col-sm-6 col-md-4">
             <img class="img_header" src="{{url_for('static', filename='profile_pics/school.png') }}"></img>
             <h3> 1. After school program at your school </h3>
-            <p> Future Creators comes to your school (now offering digital delivery!). We work with you to find what is best for your schedule, and establish a once-a-week after school program where a pair of mentors work with your students</p>
+            <p> Future Creators comes to your school (now offering digital delivery!). We work with you to find what is best for your schedule, and establish a once-a-week after school program where a pair of mentors work with your students.</p>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
             <img class="img_header" src="{{url_for('static', filename='profile_pics/project.png') }}"></img>
             <h3> 2. Choose a project </h3>
-            <p> Our mentors help your students choose a project that inerests them. This can be anything they can think of. In the past, students have chosen project from building drones to video games!</p>
+            <p> Our mentors help your students choose a project that inerests them. This can be anything from building drones to robot cars!</p>
         </div>
         <div class="col-sm-12 col-md-4">
             <img class="img_header" src="{{url_for('static', filename='profile_pics/reality.png') }}"></img>
             <h3> 3. We help make it a reality </h3>
-            <p> Our mentors provide the <a href="{{url_for('main.about')}}" >resources, knowledge, and guidance </a> in weekly afterschool sessions to bring your students' ideas to life</p>
+            <p> Our mentors provide the <a href="{{url_for('main.about')}}" >resources, knowledge, and guidance </a> in weekly after school sessions to bring your students' projects to life.</p>
         </div> 
     </div>
+</div>
+<div id="signup" class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="form-group">
+                {{ form.name.label(class="form-control-label") }}
+                {% if form.name.errors %}
+                    {{ form.name(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.name(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.school.label(class="form-control-label") }}
+                {% if form.school.errors %}
+                    {{ form.school(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.school.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.school(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.grade.label(class="form-control-label") }}
+                {% if form.grade.errors %}
+                    {{ form.grade(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.grade.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.grade(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.phone.label(class="form-control-label") }}
+                {% if form.phone.errors %}
+                    {{ form.phone(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.phone.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.phone(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {% if form.content.errors %}
+                    {{ form.content(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content(class="form-control form-control-lg", rows="5") }}
+                {% endif %}
+            </div>
+             {{ form.recaptcha }}
+
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
 </div>
 {% endblock content %}

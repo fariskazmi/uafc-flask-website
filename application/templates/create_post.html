@@ -1,10 +1,24 @@
 {% extends 'layout.html' %}
+{% block head %}
+    
+    <link rel="stylesheet" href="{{url_for('static', filename='js/css/style.css')}}">
+    <script src="{{url_for('static', filename='js/modernizr-2.6.2.min.js')}}"></script>
+    
+{% endblock head %}
 {% block content %}
 <div class="content-section">
     <form method="POST" action="" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <legend id="legend-js-acess" class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">You can use either Markdown or HTML to create a post.</h4>
+                <p> If you want to use color, images, or any other CSS attributes, you should use HTML. You can use both at the same time, but going from HTML to Markdown will cause you to lose all your CSS style properties. After editing a field, scroll down to the bottom to see what your post will look like.</p>
+                <hr>
+                <p class="mb-0">Whichever field you edit will impact the other field at the same time. Edit one of the fields below to get started. HTML will give you better formatting, but Markdown is easier for simpler tasks. </p>
+                <hr>
+                <button type="button" class="btn btn-primary btn-sm" onclick="save_post()">Save Post</button> You can save your progress and work on this post later as well.
+              </div>
             <div class="form-group">
                 {{ form.title.label(class="form-control-label") }}
                 {% if form.title.errors %}
@@ -15,7 +29,20 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.title(class="form-control form-control-lg") }}
+                    {{ form.title(class="form-control form-control-lg", id="form-title-for-js") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content_md.label(class="form-control-label")  }}
+                {% if form.content_md.errors %}
+                    {{ form.content_md(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content_md.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content_md(class="form-control form-control-lg mdhtmlform-md", id="markdown_input", rows="10") }}
                 {% endif %}
             </div>
             <div class="form-group">
@@ -28,9 +55,14 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.content(class="form-control form-control-lg") }}
+                    {{ form.content(class="form-control form-control-lg mdhtmlform-html", id="html_input", rows="10") }}
                 {% endif %}
             </div>
+            <div class="form-group">
+                {{ "Output"}}
+            </div>
+            <div style="border-color: red; overflow: hidden;" class="mdhtmlform-html"></div>
+            <!--
             <div class = "form-group">
                 {{ form.picture.label() }}
                 {{form.picture(class="form-control-file") }}
@@ -38,12 +70,130 @@
                     {% for error in form.picture.errors %}
                         <span class="text-danger"> {{ error }} </span> </br>
                     {% endfor %}
-                {% endif %}
+                {% endif %} -->
             </div>
         </fieldset>
         <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}
         </div>
     </form>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/plugins.js')}}"></script>
+    <script src="{{url_for('static', filename='js/showdown.js')}}"></script>
+    <script src="{{url_for('static', filename='js/to-markdown.js')}}"></script>
+    <script src="{{url_for('static', filename='js/mdhtmlform.js')}}"></script>
+    <script src="{{url_for('static', filename='js/example.js')}}"></script>
 </div>
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Saving...</h5>
+        </div>
+        <div class="modal-body">
+          <p id="modal-content-paragraph"> Please wait...</p>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-dismiss-button" disabled="true" type="button" class="btn btn-primary" data-dismiss="modal">Hold on...</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
+
+
+{% block scripts %}
+
+<script>
+    window.onload = function() {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "/get-users-saved-post",
+            traditional: "true",
+            data: JSON.stringify(true),
+            dataType: "json",
+            success: function(result){
+                if (result['title'] == '' && result['html'] == '' && result['md'] == '' ){
+                    var html = `<h2 id="samplesubtitle">Sample Subtitle</h2>
+
+<p>Some content to enjoy</p>
+
+<a href="https://www.uafc.me"> A sample hyperlink </a>
+
+<p> An Example Image that you can style </p>
+
+<img style="object-fit:contain; height:100%; width:100%; max-height: 512px; max-width: 512px;" src="https://www.uafc.me/static/profile_pics/default.jpg">
+
+<p style="color: green"> Enjoy some green text because your using HTML </p>
+
+This is just some of the amazing stuff you can do with this beautiful editor. Thank you Faris!
+`;
+var markdown = `## Sample Subtitle
+
+Some content to enjoy
+
+[ A sample hyperlink ](https://www.uafc.me)
+
+Not recommended to use images with Markdown because of formatting issues!
+
+Don't enjoy green text because your using Markdown
+
+This is just some of the amazing stuff you can do with this beautiful editor. Thank you Faris!
+`;
+                }
+                else {
+                    var markdown = result['md']
+                    var html = result['html']
+                    var title = result['title']
+                    document.getElementById('form-title-for-js').value = title;
+                    document.getElementById('legend-js-acess').innerHTML = "Accessing Saved Post"
+                }
+                
+        document.getElementById("markdown_input").value = markdown;
+        document.getElementById("html_input").value = html;
+
+            }
+        }) 
+    };
+
+</script>
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="popover"]').popover();
+    });
+</script>
+<script>
+    function save_post(){
+        document.getElementById('staticBackdropLabel').innerHTML = "Saving...";
+        document.getElementById('modal-content-paragraph').innerHTML = "Please wait...";
+        document.getElementById('modal-dismiss-button').disabled = true;
+        document.getElementById('modal-dismiss-button').innerHTML = "Hold on...";
+        title = document.getElementById('form-title-for-js').value;
+        md = document.getElementById('markdown_input').value;
+        html = document.getElementById('html_input').value;
+        $('#staticBackdrop').modal('toggle')
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "/save-users-saved-post",
+            traditional: "true",
+            data: JSON.stringify({title, html, md}),
+            dataType: "json",
+            success: function(result){
+                if (result){
+                    setTimeout(() => { document.getElementById('staticBackdropLabel').innerHTML = "Post saved!";
+                           document.getElementById('modal-content-paragraph').innerHTML = "You can access your work by going to this page on any device while logged in to your account.";
+                           document.getElementById('modal-dismiss-button').disabled = false;
+                           document.getElementById('modal-dismiss-button').innerHTML = "Close";}, 1000);
+                }
+                else {
+                    alert("Something unexpected happened. Please try again later. If this keeps happening, scream for help.")
+                }
+
+            }
+        }) 
+    }
+</script>
+{% endblock scripts %}

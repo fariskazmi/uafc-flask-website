@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> About Us </h1>
+        </div>
+        <hr>
+        <div class="col-12">
+            <p class="lead" style="font-size: x-large; font-weight: 500;">Future Creators is a University of Alberta Engineering student group that seeks to inspire future engineers and technology innovators by providing youth with the mentors, knowledge, and resources to bring their own technology projects to life.</p>
+
+                <p class="lead">We partner with schools to provide a weekly afterschool program to students in grades 7-12. </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid padding">
+    <div class="row text-center padding">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <img class="img_header" src="{{url_for('static', filename='profile_pics/mentor.png') }}"></img>
+            <h3> Mentors </h3>
+            <p> Students are matched with a pair of knowledgable university engineering student mentors. Additionally, these student mentors have access to support and guidance from the University of Alberta Engineering Faculty.</p>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <img class="img_header" src="{{url_for('static', filename='profile_pics/knowledge.png') }}"></img>
+            <h3> Knowledge </h3>
+            <p> Our projects usually use some combination of <a href="#arduino">Arduino, 3-D Printing, and Coding </a>. To establish a base of knowledge for any students who need it, we have beginner courses in all these areas.</p>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <img class="img_header" src="{{url_for('static', filename='profile_pics/resources.png') }}"></img>
+            <h3> Resources </h3>
+            <p> We loan (or give!) any parts needed for free. From Arduinos (mini-computers) to sensors, wires, batteries, 3D-printer access and 3D printing filament. We make sure students have all they need to make their idea a reality.</p>
+        </div> 
+    </div>
+    <hr class="my-4">
+</div>
+
+
+<div class="container-fluid padding">
+    <div class="row padding">
+        <div id="arduino" class="col-md-12 col-lg-6">
+            <h2> Arduino </h2>
+            <p> Arduinos are microcontrollers (mini-computers) that act as the brains for many projects. Working with Arduinos involves everything from wires and electric basics (voltage, current, ground) to all sorts of sensors, motors, and even programming the Arduino itself!</p>
+        </div>
+        <div class="col-lg-6">
+            <img class="img-fluid" src="{{url_for('static', filename='profile_pics/arduino.jpg') }}">
+        </div>
+    </div>
+</div>
+<hr class="my-4">
+<div class="container-fluid padding">
+    <div class="row padding">
+        <div class="col-md-12 col-lg-6">
+            <h2> Coding </h2>
+            <p> There are endless coding languages, everything from C to Python to Java. Working with programming involves everything from the basics, such as variables, decision making statements and functions, to more complicated topics such as neural networks and machine learning!</p>
+        </div>
+        <div class="col-lg-6">
+            <img class="img-fluid" src="{{url_for('static', filename='profile_pics/coding.jpg') }}">
+        </div>
+    </div>
+</div>
+<hr class="my-4">
+<div class="container-fluid padding">
+    <div class="row padding">
+        <div class="col-md-12 col-lg-6">
+            <h2> 3D Printing </h2>
+            <p> 3D Printing takes anything you can model, and brings it to life! Working with 3D Printing involves a wide range of topics such as: 3D printer operation and troubleshooting techniques, dimensioning, and 3D modeling. From a cube to a pangolin (look it up, it's a mammal that looks like an armadillo!), anything can be created with some plastic filament.</p>
+        </div>
+        <div class="col-lg-6">
+            <img class="img-fluid" src="{{url_for('static', filename='profile_pics/3dprinting.jpg') }}">
+        </div>
+    </div>
+</div>
+<hr class="my-4">
+      
+<div class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-4"> Meet the Team </h1>
+        </div>
+        <hr>
+    </div>
+</div>
+      <div class="row row-cols-1 row-cols-md-4">
+    {% for user in users %}
+        <div class="col mb-4">
+          <div class="card">
+            <img src="{{url_for('static', filename='profile_pics/' + user.image_file)}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ user.username}}</h5>
+              <p class="card-text">{{ user.biography }}</p>
+              <p class="card-text">Contact: {{ user.email }}</p>
+              
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+      </div>
+{% endblock content %}

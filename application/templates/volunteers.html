@@ -1,15 +1,147 @@
 {% extends 'layout.html' %}
+{% block head %}
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='js/css/woah.css')}}">
+</head>
+{% endblock head %}
 {% block content %}
-
-<div class="container-fluid padding">
+<div id="animate_this" class="container-fluid padding">
     <div class="row welcome text-center">
         <div class="col-12">
             <h1 class="display-4"> Volunteers </h1>
         </div>
         <hr>
         <div class="col-12">
-            <p class="lead"><a href="{{url_for('main.contact')}}">Sign up on our form </a> and we will reach out to chat with you and find a schedule that works for you. If you have a passion for engineering and technology and want to be mentor to inspire that same passion in students in grades 7-12, <a href="{{url_for('main.contact')}}">sign up here </a>. You and a partner will be matched with a school to provide after school mentorship and build a technology project. Even if you've never built a technology project before, no need to worry! We provide all the training and guidance you need. For more challenging projects, you will also have access to our University of Alberta Engineering Faculty partners for support. </p>
+            <p class="lead" style="font-size: x-large; font-weight: 500;"> Do you have a passion for engineering and technology? </p> <p class="lead"><a href="#signup">Sign up on our form </a> and we will reach out to chat with you. Even if you've never built a technology project before, no need to worry! We provide all the training and guidance you need. For more challenging projects, you will also have access to our University of Alberta Engineering Faculty partners for support. We can teach you cool stuff like <a href="#" onclick="garbage()"> this </a> or even <a href="#" onclick="garbage2()"> this.</a> Or maybe a bit more subtle, like <a href="#" onclick="garbage3()"> this. </a></p>
         </div>
     </div>
 </div>
+<div id="animate_this" class="container-fluid padding">
+    <div class="row welcome text-center">
+        <div class="col-12">
+            <h1 class="display-6"> What do volunteers do? </h1>
+        </div>
+        <hr>
+    </div>
+</div>
+<div class="container-fluid padding">
+    <div class="row text-center padding">
+        <div class="col-xs-6 col-sm-6 col-md-6">
+            <img class="img_header" src="{{url_for('static', filename='profile_pics/develop.png') }}"></img>
+            <h3> Develop </h3>
+            <p> Help us develop new project ideas, from drones to machine learning!</p>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <img class="img_header" src="{{url_for('static', filename='profile_pics/mentor_volunteer.png') }}"></img>
+            <h3> Mentor </h3>
+            <p> You and a partner will be matched with students in grades 7-12 to provide after school mentorship and help them build thier own project. </p>
+        </div> 
+    </div>
+    <hr class="my-4">
+</div>
+<div id="signup" class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="form-group">
+                {{ form.name.label(class="form-control-label") }}
+                {% if form.name.errors %}
+                    {{ form.name(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.name(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.faculty.label(class="form-control-label") }}
+                {% if form.faculty.errors %}
+                    {{ form.faculty(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.faculty.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.faculty(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.year.label(class="form-control-label") }}
+                {% if form.year.errors %}
+                    {{ form.year(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.year.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.year(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.interest.label(class="form-control-label") }}
+                {% if form.interest.errors %}
+                    {{ form.interest(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.interest.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.interest(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {% if form.content.errors %}
+                    {{ form.content(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content(class="form-control form-control-lg", rows="5") }}
+                {% endif %}
+            </div>
+             {{ form.recaptcha }}
+
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+<script>
+    function garbage(){
+        document.getElementById("animate_this").className += "normie shaker";
+        setTimeout(() => {  document.getElementById("animate_this").className -= "normie shaker"; }, 1000);
+    }
+    function garbage2(){
+        document.getElementById("animate_this").className += "woah rotateComplexOut";
+        setTimeout(() => {  document.getElementById("animate_this").className -= "woah rotateComplexOut"; }, 5000);
+    }
+    function garbage3(){
+        document.getElementById("animate_this").className += "wow blazingStarText";
+        setTimeout(() => {  document.getElementById("animate_this").className -= "wow blazingStarText"; }, 5000);
+    }
+</script>
 {% endblock content %}

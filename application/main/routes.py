@@ -1,8 +1,9 @@
-from flask import render_template, request, Blueprint, flash, redirect, url_for
+from flask import render_template, request, Blueprint, flash, redirect, url_for, current_app, jsonify
 from application.models import Post, User, Newsletter_subscription
-from application.main.forms import ContactForm
+from application.main.forms import ContactForm, VolunteerContactForm, TeacherContactForm, NewsletterSignUpConfirmationForm
 from application.main.utils import send_contact_email, send_newsletter_email, verify_newsletter_token, get_newsletter_token, verify_unsubscribe_token
 from application import db
+from pyhunter import PyHunter
 
 main = Blueprint('main', __name__)
 
@@ -29,20 +30,32 @@ def contact():
         
     return render_template("contact.html", title="Contact", form=form, legend="Contact")
 
-@main.route('/teachers')
+@main.route('/teachers', methods=['GET', 'POST'])
 def teachers():
-    return render_template('teachers.html', title='Teachers')
+    form = TeacherContactForm()
+    if form.validate_on_submit():
+        flash("Message sent! (Not actually)", 'success')
+        return redirect(url_for('main.teachers'))
+    return render_template('teachers.html', title='Teachers', form=form, legend="Teachers - Sign up!")
 
-@main.route('/volunteers')
+@main.route('/volunteers', methods=['GET', 'POST'])
 def volunteers():
-    return render_template('volunteers.html', title='Volunteers')
+    form = VolunteerContactForm()
+    if form.validate_on_submit():
+        flash("Message sent! (Not actually)", 'success')
+        return redirect(url_for('main.volunteers'))
+    return render_template('volunteers.html', title='Volunteers', form=form, legend="Volunteers - Sign up!")
 
-@main.route('/newsletter_signup', methods=["POST"])
+@main.route('/newsletter_signup', methods=['POST'])
 def newsletter_signup():
-    token = get_newsletter_token(request.form['email'])
-    send_newsletter_email(request.form['email'], token)
-    flash("An email has been sent to confirm your subscription to our newsletter.", 'success')
-    return render_template('newsletter_signup.html', title='Newsletter Signup', heading="Thanks for signing up!", body="Check your email to confirm your subscription to our newsletter")
+    form = NewsletterSignUpConfirmationForm(request.form)
+    if form.validate_on_submit():
+        token = get_newsletter_token(form.email.data)
+        send_newsletter_email(form.email.data, token)
+        flash("An email has been sent to confirm your subscription to our newsletter.", 'success')
+        return redirect(url_for('main.home'))
+    email = request.form['email']
+    return render_template('newsletter_signup_confirm.html', title='Newsletter Signup', heading="Thanks for signing up!", body="Complete the following reCAPTCHA to confirm your subscription", form=form, legend="", email=email, email_verification_failed = "False")
 
 @main.route('/newsletter_signup/<token>', methods=["GET"])
 def newsletter_signup_verify(token):
@@ -76,6 +89,12 @@ def newsletter_unsubscribe_verify(token):
         flash("Your subscription has been cancelled!", 'success')
         return render_template('newsletter_signup.html', title='Newsletter Unsubscribe', heading="Subscription cancelled!", body="We're sorry to see you go. If you would like to tell us why you unsubscribed, please go to our contact page")
 
+@main.route('/verify-email', methods=['POST'])
+def verify_email():
+    email = request.get_json()['email']
+    hunter = PyHunter(current_app.config['HUNTER_API_KEY'])
+    verification_result = hunter.email_verifier(email)
+    return jsonify(verification_result['result'] != 'undeliverable')
 
 
 

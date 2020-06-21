@@ -45,6 +45,13 @@
                         {{ form.password(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                <div id="password-strength-group" style="display: none" class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Password Strength</h4>
+                    <meter value="0" min="0" max="4" id="password-strength-meter"></meter>
+                    <p id="password-strength-text"></p>
+                    <hr>
+                    <p id="password-strength-text2"></p>
+                </div>
                 <div class="form-group">
                     {{ form.confirm_password.label(class="form-control-label") }}
                     {% if form.confirm_password.errors %}
@@ -71,6 +78,30 @@
                         {{ form.invite_key(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <div class="form-check">
+                            {{ form.admin(class="form-check-input",type="checkbox",id="autoSizingCheck")}}
+                          {{ form.admin.label(class="form-check-label",for="autoSizingCheck")}}
+                          </label>
+                        </div>
+                      </div>
+                      <hr>
+                    <div class="col-md-10">
+                        {{ form.admin_key.label(class="sr-only", for="inlineFormInput") }}
+                    {% if form.admin_key.errors %}
+                        {{ form.admin_key(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.admin_key.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.admin_key(type="text",class="form-control form-control-lg", id="inlineFormInput", placeholder="Admin Key (Optional)") }}
+                    {% endif %}
+                    </div>       
+                  </div>
+                  {{ form.recaptcha }}
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
@@ -83,3 +114,57 @@
         </small>
     </div>
 {% endblock content %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+<script>
+    var strength = {
+        0: "Terrible",
+        1: "Bad",
+        2: "Weak",
+        3: "Good",
+        4: "Strong"
+    }
+
+    var password = document.getElementById('password');
+    var meter = document.getElementById('password-strength-meter');
+    var text = document.getElementById('password-strength-text');
+    var text2 = document.getElementById('password-strength-text2');
+
+    password.addEventListener('input', function()
+    {
+        document.getElementById("password-strength-group").style.display = "block";
+        var val = password.value;
+        var result = zxcvbn(val);
+
+        if (result.score == 0 || result.score == 1){
+            document.getElementById("password-strength-group").className = "alert alert-danger";
+        }
+        else if (result.score == 2 || result.score == 3){
+            document.getElementById("password-strength-group").className = "alert alert-warning";
+        }
+        else if (result.score == 4){
+            document.getElementById("password-strength-group").className = "alert alert-success";
+        }
+        
+        // Update the password strength meter
+        meter.value = result.score;
+   
+        // Update the text indicator
+        if(val !== "") {
+            if (result.crack_times_display.offline_fast_hashing_1e10_per_second == "centuries"){
+                text.innerHTML = "Strength: " + "<strong>" + "Neil Armstrong" + "</strong>" + "<span class='feedback'>" + result.feedback.warning + ". " + result.feedback.suggestions + "Good password!" + "</span"; 
+            }
+            else {
+                text.innerHTML = "Strength: " + "<strong>" + strength[result.score] + "</strong>" + "<span class='feedback'>" + result.feedback.warning + ". " + result.feedback.suggestions + "</span"; 
+            }
+            text2.innerHTML = "Your password could be cracked in <strong>" + result.guesses + "</strong> guesses, taking <strong>" + result.crack_times_display.offline_slow_hashing_1e4_per_second + "</strong>";
+        }
+        else {
+            text.innerHTML = "";
+            text2.innerHTML = "";
+            document.getElementById("password-strength-group").style.display = "none";
+        }
+    });
+</script>
+{% endblock scripts %}
